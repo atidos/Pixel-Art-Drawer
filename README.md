@@ -1,5 +1,5 @@
 # Pixel-Art-Drawer
-An editor tool to draw pixel-art directly on the scene.
+An editor tool for unity to draw pixel-art sprites directly on the scene.
 
 Usage:
 - Import the scripts to your project.
