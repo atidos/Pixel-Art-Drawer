@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 
-[CustomEditor(typeof(PixelArtDrawer))]
+[CustomEditor(typeof(PixelArtDrawer)), RequireComponent(typeof(SpriteRenderer))]
 public class PixelArtDrawerEditor : Editor
 {
     bool drawToggle = false;
@@ -31,18 +31,23 @@ public class PixelArtDrawerEditor : Editor
         if (!drawToggle)
             return;
 
+        Vector3 mousePosition = Event.current.mousePosition;
+        Ray ray = HandleUtility.GUIPointToWorldRay(mousePosition);
+        mousePosition = ray.origin;
+        
         if ((Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseDrag) && (Event.current.button == 0 || Event.current.button == 1))
         {
-            Vector3 mousePosition = Event.current.mousePosition;
-            Ray ray = HandleUtility.GUIPointToWorldRay(mousePosition);
-            mousePosition = ray.origin;
-            drawer.DrawPixel(mousePosition, (Event.current.button == 1));
-            Event.current.Use();
+            if (drawer.GetComponent<SpriteRenderer>().bounds.Contains((Vector2)mousePosition))
+            {
+                drawer.DrawPixel(mousePosition, (Event.current.button == 1));
+                Event.current.Use();
+            }
         }
         if (Event.current.type == EventType.Layout)
         {
             HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
         }
+        
     }
 
 }
