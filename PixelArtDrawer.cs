@@ -8,6 +8,7 @@ using UnityEngine;
 public class PixelArtDrawer : MonoBehaviour
 {
     public Color paintColor = Color.black;
+    public float pixelsPerUnit = 12;
     Texture2D texture;
 
     public async void Save()
@@ -29,8 +30,7 @@ public class PixelArtDrawer : MonoBehaviour
 
     public void NewTexture()
     {
-        
-        if (texture.width == (int)Mathf.Round(GetComponent<SpriteRenderer>().size.x * 12) && texture.height == (int)Mathf.Round(GetComponent<SpriteRenderer>().size.y))
+        if (texture != null && texture.width == (int)Mathf.Round(GetComponent<SpriteRenderer>().size.x * pixelsPerUnit) && texture.height == (int)Mathf.Round(GetComponent<SpriteRenderer>().size.y * pixelsPerUnit) && GetComponent<SpriteRenderer>().sprite.pixelsPerUnit == pixelsPerUnit)
         {
             //if same size, just clear the texture
 
@@ -45,11 +45,11 @@ public class PixelArtDrawer : MonoBehaviour
         else
         {
             //if size changed, create new texture
+            print(texture);
 
-            Destroy(texture);
-            texture = new Texture2D((int)Mathf.Round(GetComponent<SpriteRenderer>().size.x * 12), (int)Mathf.Round(GetComponent<SpriteRenderer>().size.y * 12), TextureFormat.RGBA32, false, true);
+            texture = new Texture2D((int)Mathf.Round(GetComponent<SpriteRenderer>().size.x * pixelsPerUnit), (int)Mathf.Round(GetComponent<SpriteRenderer>().size.y * pixelsPerUnit), TextureFormat.RGBA32, false, true);
             Sprite sprite = Sprite.Create(texture,
-                                          new Rect(0, 0, (int)Mathf.Round(GetComponent<SpriteRenderer>().size.x * 12), (int)Mathf.Round(GetComponent<SpriteRenderer>().size.y * 12)), Vector2.one / 2, 12);
+                                          new Rect(0, 0, (int)Mathf.Round(GetComponent<SpriteRenderer>().size.x * pixelsPerUnit), (int)Mathf.Round(GetComponent<SpriteRenderer>().size.y * pixelsPerUnit)), Vector2.one / 2, pixelsPerUnit);
             texture.filterMode = FilterMode.Point;
             print("New sprite created.");
             GetComponent<SpriteRenderer>().sprite = sprite;
@@ -74,7 +74,7 @@ public class PixelArtDrawer : MonoBehaviour
 
         Vector2 targetPos = new Vector2(-relativePos.x + GetComponent<SpriteRenderer>().size.x / 2,
                                         -relativePos.y + GetComponent<SpriteRenderer>().size.y / 2);
-        targetPos = targetPos * 12;
+        targetPos = targetPos * pixelsPerUnit;
         texture.SetPixel((int)(targetPos.x), (int)(targetPos.y), delete? Color.clear : paintColor);
         texture.Apply(false);
     }
