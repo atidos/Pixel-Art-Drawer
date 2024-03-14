@@ -1,5 +1,6 @@
-# Pixel-Art-Drawer
+# Pixel Art Drawer
 An editor tool for unity to draw pixel-art sprites directly on the scene.
+
 ![](https://github.com/atidos/Pixel-Art-Drawer/blob/main/preview.gif)
 
 Usage:
